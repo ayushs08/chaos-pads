@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css?family=Oswald:200,300,400');
+$theme: #252830;
+@function theme-based-color($color, $amount) {
+  @if (lightness($color) > 50) {
+    @return darken($color, $amount*2);
+  } @else {
+    @return lighten($color, $amount);
+  }
+}
+$colors: (
+  #ef5350,
+  #EC407A,
+  #AB47BC,
+  #7E57C2,
+  #5C6BC0,
+  #42A5F5,
+  #29B6F6,
+  #26C6DA,
+  #26A69A,
+  #66BB6A,
+  #9CCC65,
+  #D4E157,
+  #FFEE58,
+  #FFCA28,
+  #FFA726,
+  #FF7043
+);
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $theme;
+  font-family: "Oswald";
+  font-weight: 200;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.machine {
+  height: 80vmin;
+  width: 80vmin;
+  max-height: 95vh;
+  max-width: 95vw;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  border: 1px solid theme-based-color($theme, 8);
+  &__pad {
+    border: 1px solid theme-based-color($theme, 8);
+    transition: all 0.2s;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color: theme-based-color($theme, 8);
+    & > span {
+      transition: all 0.2s;
+    }
+    &:hover {
+      transform: scale(1.05);
+      border: none;
+      & > span {
+        opacity: 0;
+      }
+    }
+    &:active, &.active {
+      transform: scale(1.02);
+      border: none;
+      & > span {
+        opacity: 0;
+      }
+    }
+  }
+}
+
+@mixin drum-pad($color) {
+  &:hover {
+      background: $color;
+      box-shadow: 0px 0px 10px 1px $color;
+    }
+    &:active, &.active {
+      background: darken($color, 4);
+      box-shadow: 0px 0px 10px 1px darken($color, 4);
+    }
+}
+
+@for $i from 0 to length($colors) {
+  .machine__pad:nth-child(#{$i + 1}) {
+    $color: nth($colors, $i + 1);
+    @include drum-pad($color);
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .machine {
+    width: 95vw;
+    height: 95vw;
+  }
+}
